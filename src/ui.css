@@ -1,0 +1,38 @@
+body {
+  font: 12px sans-serif;
+  text-align: center;
+  margin: 20px;
+}
+button {
+  border-radius: 5px;
+  background: white;
+  color: black;
+  border: none;
+  padding: 8px 15px;
+  margin: 0 5px;
+  box-shadow: inset 0 0 0 1px black;
+  outline: none;
+}
+button.create {
+  box-shadow: none;
+  background: #18A0FB;
+  color: white;
+}
+input {
+  border: none;
+  outline: none;
+  padding: 8px;
+}
+#result {
+  border-radius: 5px;
+  background: white;
+  color: black;
+  border: none;
+  padding: 16px 0;
+  margin: 0;
+  outline: none;
+}
+
+#result.h4, #result.pre {
+  word-wrap: normal;
+}

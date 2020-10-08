@@ -1,0 +1,7 @@
+{
+  "name": "Quik N Easy",
+  "id": "893618373425317222",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
+}
