@@ -3,29 +3,29 @@ figma.showUI(__html__);
 figma.ui.onmessage = msg => {
 
   function readEasingValues(node) {
+    console.log(node);
+    
+
     if ('reactions' in node && node.reactions.length > 0 && node.reactions != "undefined") {
-      
-      let ease = node.reactions[0].action.transition.easing
-      let name = node.name
 
-      console.log(node, ease, name);
-
-      if (ease.type === "CUSTOM_CUBIC_BEZIER") {
-        let easeOutput = ease.easingFunctionCubicBezier ? ease.easingFunctionCubicBezier : ease
-        let result = { node, name, easeOutput }
-        figma.ui.postMessage(result)
-      } else {
-        let message = `Ease Type: ${ease.type}`
-        let result = { node, name, message }
-        figma.ui.postMessage(result)
+      for (const reaction of node.reactions) {
+        let ease = reaction.action.transition.easing
+        let name = node.name
+        // console.log(reaction, node, ease, name);
+        if (ease.type === "CUSTOM_CUBIC_BEZIER") {
+          let curves = ease.easingFunctionCubicBezier ? ease.easingFunctionCubicBezier : ease
+          let result = { name, node, curves, reaction }
+          figma.ui.postMessage(result)
+        } else {
+          let result = { name, node, reaction }
+          figma.ui.postMessage(result)
+        }
       }
+
     } else {
-
-      console.log(node);
-
       let name = node.name
-      let message = `No Easing`
-      let result = { node, name, message }
+      let reaction = "FRAME_HAS_NO_TRANSITIONS"
+      let result = { node, name, reaction }
       figma.ui.postMessage(result)
     }
 
@@ -33,9 +33,14 @@ figma.ui.onmessage = msg => {
   }
 
   if (msg.type === 'selected-frame') {
-    for (const node of figma.currentPage.selection) {
-      readEasingValues(node)
+    if (figma.currentPage.selection.length > 0) {
+      for (const node of figma.currentPage.selection) {
+        readEasingValues(node)
+      }
+    } else {
+      figma.ui.postMessage("NO_FRAMES_SELECTED")
     }
+    
   }
 
   if (msg.type === 'resize-small') {

@@ -2,6 +2,10 @@ body {
   font: 12px sans-serif;
   text-align: center;
   margin: 20px;
+  color: #333;
+}
+img {
+  width: 160px;
 }
 button {
   border-radius: 5px;
@@ -26,7 +30,7 @@ input {
 #result {
   border-radius: 5px;
   background: white;
-  color: black;
+  color: #333;
   border: none;
   padding: 16px 0;
   margin: 0;
@@ -35,4 +39,48 @@ input {
 
 #result.h4, #result.pre {
   word-wrap: normal;
+  text-align: left;
+}
+
+.wrapper {
+  display: block;
+  /* background: red; */
+  width: 100%;
+  border: solid 1.25px #e5e5e5;
+  border-radius: 12px;
+  padding: 0 16px 16px;
+  margin: 0;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.wrapper.disabled {
+  opacity: .5;
+  padding: 0 16px 0;
+}
+
+.wrapper-header {
+  font: 12px sans-serif;
+  text-align: center;
+  font-weight: 600;
+}
+
+table {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+table p {
+  font: 12px sans-serif;
+  line-height: 1.5;
+  text-align: left;
+  color: rgb(129, 129, 129);
+}
+
+table pre {
+  font: 12px monospace;
+  line-height: 1.5;
+  text-align: right;
 }
