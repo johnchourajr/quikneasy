@@ -1,4 +1,6 @@
 import './ui.css'
+import * as util from './util.ts'
+
 
 let resultEl = document.getElementById('result')
 
@@ -12,17 +14,49 @@ document.getElementById('reset').onclick = () => {
   resultEl.innerHTML = null
 }
 
+function outputBlock(name, node, curves, reaction) {  
+  return(`
+    <div class="wrapper">
+      <p class="wrapper-header">Frame: "${name}"</p>
+      <table>
+        <tbody>
+          <tr>
+            <td><p>id</p></td>
+            <td><pre>${node.id}</pre></td>
+          </tr>
+          <tr>
+            <td><p>Trigger</p></td>
+            <td><pre>${util.triggerNameUtil(reaction.trigger.type)}</pre></td>
+          </tr>
+          <tr>
+            <td><p>Type</p></td>
+            <td><pre>${util.curveNameUtil(reaction.action.transition.easing.type)}</pre></td>
+          </tr>
+          ${curves ? `<tr>
+            <td><p>Curves</p></td>
+            <td><pre>${curves}</pre></td>
+          </tr>` : ``}
+        </tbody>
+      </table>
+    </div>
+  `)
+}
+
 onmessage = (event) => {
     let data = event.data.pluginMessage
 
-    let dataFormatted = "easeOutput" in data ? `
-      <h4>Frame: ${data.name}</h4>
-      <pre>cubic-bezier(${data.easeOutput.x1.toFixed(2)}, ${data.easeOutput.x2.toFixed(2)}, ${data.easeOutput.y1.toFixed(2)}, ${data.easeOutput.y2.toFixed(2)})</pre>
-      <br/>
-    ` : `
-      <h4>Frame: ${data.name}</h4>
-      <pre>${data.message}</pre>
-      <br/>
-    `
-    resultEl.innerHTML += dataFormatted
+  if (data === "NO_FRAMES_SELECTED") {
+    resultEl.innerHTML += `<div class="wrapper disabled"><p class="wrapper-header">No frame selected</p></div>`
+  } else {
+
+    if (data.reaction === "FRAME_HAS_NO_TRANSITIONS") {
+      resultEl.innerHTML += `<div class="wrapper disabled"><p class="wrapper-header">Frame: "${data.name}" has no transitions</p></div>`
+    } else {
+      let dataFormatted = "curves" in data
+        ? `${data.curves.x1.toFixed(2)}, ${data.curves.x2.toFixed(2)}, ${data.curves.y1.toFixed(2)}, ${data.curves.y2.toFixed(2)}`
+        : null
+
+      resultEl.innerHTML += outputBlock(data.name, data.node, dataFormatted, data.reaction)  
+    }
+  }
 }
